@@ -1,0 +1,13 @@
+# Nixpacks configuration for Railway
+[phases.setup]
+nixPkgs = ["python311", "nodejs_20", "poppler_utils", "tesseract"]
+
+[phases.build]
+cmds = [
+    "npm install --prefix react-frontend",
+    "npm run build --prefix react-frontend",
+    "pip install -r requirements.txt"
+]
+
+[start]
+cmd = "uvicorn app:app --host 0.0.0.0 --port $PORT"
