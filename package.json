@@ -5,6 +5,6 @@
     "build": "cd react-frontend && npm install && npm run build"
   },
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   }
 }
