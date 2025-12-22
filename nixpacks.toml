@@ -6,7 +6,8 @@ nixPkgs = ["python311", "nodejs_20", "poppler_utils", "tesseract"]
 cmds = [
     "npm install --prefix react-frontend",
     "npm run build --prefix react-frontend",
-    "pip install -r requirements.txt"
+    "pip install -r requirements.txt",
+    "cp -r react-frontend/dist dist"
 ]
 
 [start]
