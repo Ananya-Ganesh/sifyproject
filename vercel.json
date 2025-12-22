@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/compare-pos", "destination": "/api/index" }
+  ]
+}

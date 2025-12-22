@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pdfplumber
+scikit-learn
+rapidfuzz
+python-multipart
+requests
+word2number
+pdf2image
+pillow
+pytesseract
+python-docx
+pandas
+openpyxl
