@@ -24,7 +24,7 @@ function App() {
     form.append("po_b", poB);
 
     try {
-      const resp = await fetch("/compare-pos", {
+      const resp = await fetch("http://127.0.0.1:8000/compare-pos", {
         method: "POST",
         body: form,
       });
@@ -34,7 +34,7 @@ function App() {
       setResults(data.results || []);
       setWarning((data.summary && data.summary.warning) || null);
     } catch (err) {
-      setError(err.message || "Failed to fetch.");
+      setError(err.message || "Failed to fetch. Is the backend running on http://127.0.0.1:8000?");
     } finally {
       setLoading(false);
     }

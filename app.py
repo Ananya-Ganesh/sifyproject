@@ -5,9 +5,9 @@ import tempfile
 from typing import Dict, Any
 
 from fastapi import FastAPI, UploadFile, File
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from po_frontend_adapter import compare_for_frontend
 
@@ -54,32 +54,30 @@ async def compare_pos(
                 pass
 
 
-# Serve React Frontend
-# Check if the dist directory exists (it should in production)
-if os.path.exists("dist"):
-    app.mount("/assets", StaticFiles(directory="dist/assets"), name="assets")
+# Serve frontend files
+frontend_dist = os.path.join(os.path.dirname(__file__), "react-frontend", "dist")
 
-    @app.get("/{full_path:path}")
-    async def serve_react_app(full_path: str):
-        # Allow API routes to pass through if defined above
-        # But here we only have /compare-pos which is POST.
-        # So we just need to catch GET requests that aren't API.
-        
-        # If the file exists in dist, serve it (e.g. vite.svg)
-        file_path = os.path.join("dist", full_path)
+if os.path.exists(frontend_dist):
+    # Mount assets folder
+    app.mount("/assets", StaticFiles(directory=os.path.join(frontend_dist, "assets")), name="assets")
+
+    # Serve index.html at root
+    @app.get("/")
+    async def serve_index():
+        return FileResponse(os.path.join(frontend_dist, "index.html"))
+
+    # Serve other static files (like vite.svg) if they exist in dist
+    @app.get("/{filename}")
+    async def serve_root_files(filename: str):
+        file_path = os.path.join(frontend_dist, filename)
         if os.path.exists(file_path) and os.path.isfile(file_path):
             return FileResponse(file_path)
-            
-        # Otherwise serve index.html for client-side routing
-        return FileResponse("dist/index.html")
+        return {"message": "Not Found"}
 else:
     @app.get("/")
     async def root():
         return {
-            "message": (
-                "PO comparison AI is running (Backend Only). "
-                "Frontend build ('dist') not found."
-            )
+            "message": "PO comparison AI is running (Backend Only). Frontend build ('dist') not found."
         }
 
 
