@@ -57,6 +57,15 @@ async def compare_pos(
 # Serve frontend files
 frontend_dist = os.path.join(os.path.dirname(__file__), "react-frontend", "dist")
 
+# Debug logging for Railway
+print(f"Current working directory: {os.getcwd()}")
+print(f"Expected frontend dist path: {frontend_dist}")
+print(f"Does frontend dist exist? {os.path.exists(frontend_dist)}")
+if os.path.exists(frontend_dist):
+    print(f"Contents of dist: {os.listdir(frontend_dist)}")
+else:
+    print("Frontend dist NOT found.")
+
 if os.path.exists(frontend_dist):
     # Mount assets folder
     app.mount("/assets", StaticFiles(directory=os.path.join(frontend_dist, "assets")), name="assets")
